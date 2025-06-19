@@ -98,4 +98,92 @@ public:
             cout << "Assigned Driver: ";
             driver->display();
         } else {
-            
+               cout << "No driver assigned.\n";
+        }
+        cout << "Passengers (" << passengerCount << "):\n";
+        for (int i = 0; i < passengerCount; i++) {
+            if (passengers[i])
+                passengers[i]->display();
+        }
+    }
+
+    void saveToFile(ofstream& fout) const {
+        fout << busID << "," << model << "," << passengerCount << endl;
+        for (int i = 0; i < passengerCount; i++) {
+            if (passengers[i]) {
+                fout << "\t";
+                passengers[i]->saveToFile(fout);
+            }
+        }
+    }
+
+    static void showTotalBuses() {
+        cout << "Total Buses in System: " << totalBuses << endl;
+    }
+
+    friend void viewBusModel(const Bus& b);
+};
+
+int Bus::totalBuses = 0;
+
+void viewBusModel(const Bus& b) {
+    cout << "[Friend] Accessing Bus Model: " << b.model << endl;
+}
+
+// ======= ROUTE CLASS =======
+class Route {
+private:
+    int routeID;
+    Bus bus;
+public:
+    void input() {
+        cout << "Enter Route ID: "; cin >> routeID;
+        cout << "Enter Bus Info for Route:\n";
+        bus.input();
+    }
+    void display() const {
+        cout << "Route ID: " << routeID << endl;
+        bus.display();
+    }
+};
+
+int main() {
+    const int MAX = 5;
+    Bus buses[MAX];
+    Driver drivers[MAX];
+    Passenger passengers[MAX];
+    Route routes[MAX];
+    int busCount = 0, driverCount = 0, passengerCount = 0, routeCount = 0;
+
+    int choice;
+    do {
+        cout << "\n==== SMART BUS MANAGEMENT SYSTEM ====\n";
+        cout << "1. Add Bus\n2. Add Driver\n3. Add Passenger\n";
+        cout << "4. Assign Driver to Bus\n5. Add Passenger to Bus\n";
+        cout << "6. Show Buses\n7. Show Drivers\n8. Show Passengers\n";
+        cout << "9. Add Route\n10. Show Routes\n";
+        cout << "11. Show Total Buses\n12. View Bus Model (Friend)\n";
+        cout << "0. Exit\nEnter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                if (busCount < MAX) {
+                    buses[busCount++].input();
+                } else cout << "Bus limit reached.\n";
+                break;
+
+            case 2:
+                if (driverCount < MAX) {
+                    drivers[driverCount++].input();
+                } else cout << "Driver limit reached.\n";
+                break;
+
+            case 3:
+                if (passengerCount < MAX) {
+                    passengers[passengerCount++].input();
+                } else cout << "Passenger limit reached.\n";
+                break;
+
+            case 4: {
+                int b, d;    
