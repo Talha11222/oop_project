@@ -187,3 +187,14 @@ int main() {
 
             case 4: {
                 int b, d;    
+ cout << "Bus Index (0-" << busCount-1 << "): "; cin >> b;
+                cout << "Driver Index (0-" << driverCount-1 << "): "; cin >> d;
+                if (b < busCount && d < driverCount)
+                    buses[b].assignDriver(&drivers[d]);
+                else
+                    cout << "Invalid indices.\n";
+                break;
+            }
+
+            case 5: {
+                int b, p;
